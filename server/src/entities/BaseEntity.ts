@@ -5,7 +5,7 @@ import { ClassConstructor } from 'class-transformer'
 export abstract class BaseEntity {
     public async validateThis(skipMissing = false): Promise<string[]> {
         const errors = await validate(this, {
-            skipMissingProperties: true,
+            skipMissingProperties: skipMissing,
         })
         const temp = errors.map(e => Object.values(e.constraints || {}))
         const result: string[] = []

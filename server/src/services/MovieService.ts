@@ -11,6 +11,7 @@ export class MovieService {
         movie = Movie.transform(movie);
         // 2. 数据验证
         const errors = await movie.validateThis()
+
         if (errors.length > 0) {
             return errors;
         }
