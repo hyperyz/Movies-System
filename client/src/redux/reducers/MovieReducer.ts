@@ -1,6 +1,6 @@
 import { ISearchResult } from "../../services/CommonTypes";
 import { IMovie } from "../../services/MovieService";
-import { DeleteAction, MovieActions, SaveMoviesAction, SetConditionAction, SetLoadingAction } from "../actions/MovieAction";
+import { DeleteAction, MovieActions, SaveMoviesAction, SetConditionAction, SetLoadingAction, SwitchAction } from "../actions/MovieAction";
 
 export type IMovieCondition = Required<ISearchResult>
 
@@ -65,6 +65,25 @@ const deleteMovie: Reducer<IMovieState, DeleteAction> = (state, action) => {
     }
 }
 
+const changeSwitch: Reducer<IMovieState, SwitchAction> = (state, action) => {
+    const movie = state.data.find(d => d._id === action.payload.id)
+    if (!movie) {
+        return state
+    }
+    const newMovie = { ...movie }
+    newMovie[action.payload.type] = action.payload.newVal
+
+    const newData = state.data.map(d => {
+        if (d._id === action.payload.id) {
+            return newMovie
+        }
+        return d
+    })
+    return {
+        ...state,
+        data: newData
+    }
+}
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (state: IMovieState = defaultState, action: MovieActions) {
@@ -77,6 +96,8 @@ export default function (state: IMovieState = defaultState, action: MovieActions
             return setCondition(state, action)
         case "movie_delete":
             return deleteMovie(state, action)
+        case "movie_switch":
+            return changeSwitch(state, action)
         default:
             return state
     }

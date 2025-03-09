@@ -1,4 +1,5 @@
-import { ISearchResult } from "../../services/CommonTypes"
+import { T } from "react-router/dist/development/route-data-H2S3hwhf"
+import { ISearchResult, SwitchType } from "../../services/CommonTypes"
 import { IMovie, MovieService } from "../../services/MovieService"
 import { IRootState } from "../reducers/RootReducer"
 import { IAction } from "./ActionTypes"
@@ -38,18 +39,18 @@ function deleteAction(id: string): DeleteAction {
         payload: id
     }
 }
-export type MovieActions = SaveMoviesAction | SetLoadingAction | SetConditionAction | DeleteAction
+export type MovieActions = SaveMoviesAction | SetLoadingAction | SetConditionAction | DeleteAction | SwitchAction
 
 // 根据条件从服务器获取电影的数据
-function fetchMovies(condition: ISearchResult): ThunkAction<Promise<void>, IRootState, any, MovieActions> {
+function fetchMovies(condition: ISearchResult): ThunkAction<Promise<void>, any, any, MovieActions> {
     return async (dispatch, getState) => {
         // 1.设置加载状态
         dispatch(setLoadingAction(true))
         // 2.设置条件
         dispatch(setConditionAction(condition))
         // 3.获取服务器数据
-        console.log("curCondition", getState());
-        const curCondition = getState().movie?.condition;
+
+        const curCondition = getState().MovieReducer?.condition;
         const resp = await MovieService.getMovies(curCondition);
         // 4.更改仓库的数据
         dispatch(saveMoviesAction(resp.data, resp.total))
@@ -67,6 +68,27 @@ function deleteMovie(id: string): ThunkAction<Promise<void>, IRootState, any, Mo
     }
 }
 
+export type SwitchAction = IAction<"movie_switch", { type: SwitchType, newVal: boolean, id: string }>
+function changeSwitchAction(type: SwitchType, newVal: boolean, id: string): SwitchAction {
+    return {
+        type: "movie_switch",
+        payload: {
+            type,
+            newVal,
+            id
+        }
+    }
+}
+
+function changeSwitch(type: SwitchType, newVal: boolean, id: string): ThunkAction<Promise<void>, IRootState, any, MovieActions> {
+    return async (dispatch, getState) => {
+        dispatch(changeSwitchAction(type, newVal, id))
+        await MovieService.edit(id, {
+            [type]: newVal
+        })
+    }
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     saveMoviesAction,
@@ -74,5 +96,7 @@ export default {
     setConditionAction,
     deleteAction,
     fetchMovies,
-    deleteMovie
+    deleteMovie,
+    changeSwitchAction,
+    changeSwitch
 }
