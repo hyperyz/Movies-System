@@ -55,7 +55,7 @@ const _Layout: React.FC = () => {
                             items={items}
                         />
                     </Sider>
-                    <Content>
+                    <Content style={{ overflow: 'auto' }}>
                         <div className='main'>
                             <Routes>
                                 <Route path="/" Component={Home} />
