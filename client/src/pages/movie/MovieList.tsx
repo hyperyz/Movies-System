@@ -1,9 +1,7 @@
 import MovieTable from "../../components/MovieTable";
 import { connect } from "react-redux";
-import { IRootState } from "../../redux/reducers/RootReducer";
 import { Dispatch } from "redux";
-import MovieAction, { MovieActions } from "../../redux/actions/MovieAction";
-import { IMovieState } from "../../redux/reducers/MovieReducer";
+import MovieAction from "../../redux/actions/MovieAction";
 import { SwitchType } from "../../services/CommonTypes";
 
 function mapStateToProps(state: any) {

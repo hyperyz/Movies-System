@@ -6,13 +6,13 @@ import AddMovie from './movie/AddMovie';
 import EditMovie from './movie/EditMovie';
 
 import { Layout } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { MailOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 type MenuItem = Required<MenuProps>['items'][number];
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 const items: MenuItem[] = [
     {
@@ -67,7 +67,6 @@ const _Layout: React.FC = () => {
 
                     </Content>
                 </Layout>
-                <Footer>Footer</Footer>
             </Layout>
         </div>
     )

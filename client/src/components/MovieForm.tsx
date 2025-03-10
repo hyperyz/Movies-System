@@ -2,9 +2,9 @@ import { Button, Checkbox, Form, FormInstance, Input, message, Switch } from "an
 import React from "react"
 import ImgUploader from "./ImgUploader";
 import { InputNumber } from "antd";
-import { MovieService } from "../services/MovieService";
+import { IMovie } from "../services/MovieService";
 const AllAreas: { label: string, value: string }[] = [
-    { label: "中国大陆", value: "中国大陆" },
+    { label: "中国", value: "中国" },
     { label: "美国", value: "美国" },
     { label: "日本", value: "日本" },
     { label: "韩国", value: "韩国" },
@@ -17,19 +17,29 @@ const AllTypes: { label: string, value: string }[] = [
     { label: "科幻", value: "科幻" },
 ]
 
-class MovieForm extends React.Component {
+interface IFormProp {
+    onSubmit: (movie: IMovie) => Promise<string>
+    movie?: IMovie
+}
+class MovieForm extends React.Component<IFormProp> {
     formRef = React.createRef<FormInstance>()
 
     onFinish = async (values: any) => {
-        const resp = await MovieService.add(values)
-        if (resp.data) {
-            message.success("添加成功")
-        } else {
-            message.error("添加失败")
+        console.log(this.props);
+        const result = await this.props.onSubmit(values);
+        if (result) {
+            message.error(result)
+        }
+        else {
+            message.success("处理成功")
         }
     };
 
-    render(): React.ReactNode {
+    componentDidUpdate(): void {
+        this.formRef.current?.setFieldsValue(this.props.movie)
+    }
+
+    render() {
         return (
             <Form
                 style={{ maxWidth: 400 }}

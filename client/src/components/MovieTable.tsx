@@ -6,7 +6,7 @@ import { IMovie } from "../services/MovieService";
 import defaultposterImg from "../assets/hyperlogo.png";
 import { SwitchType } from "../services/CommonTypes";
 import { NavLink } from "react-router-dom";
-import Icon from '@ant-design/icons'
+
 
 interface IMovieTableProps extends IMovieState {
     // 完成加载之后的事件

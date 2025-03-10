@@ -1,4 +1,3 @@
-import { T } from "react-router/dist/development/route-data-H2S3hwhf"
 import { ISearchResult, SwitchType } from "../../services/CommonTypes"
 import { IMovie, MovieService } from "../../services/MovieService"
 import { IRootState } from "../reducers/RootReducer"
